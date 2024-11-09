@@ -10,11 +10,7 @@
 			const url=`https://latest.currency-api.pages.dev/v1/currencies/${fromcurr}.json`;
         try {
             const response = await fetch(url); // Replace with your API URL
-          console.log('h')  
 					const data = await response.json();
-					          console.log('h')  
-
-		        console.log(data)
             currval = data[fromcurr]; // Store the conversion rates in 'currencies'
             updateOutval();
 					
