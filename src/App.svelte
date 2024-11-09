@@ -1,56 +1,53 @@
 
 <script>
-	let fromcurr='inr';
-	let tocurr='usd';
+	let fromcurr='usd';
+	let tocurr='inr';
 	let inval=1;
 	let outval=84.48;
 	let convrate=1;
 	let currval={};
     async function fetchData() {
+			const url=`https://latest.currency-api.pages.dev/v1/currencies/${fromcurr}.json`;
         try {
-            const response = await fetch('https://latest.currency-api.pages.dev/v1/currencies/usd.json'); // Replace with your API URL
-            const data = await response.json();
-        if (data && data.rates) {
-            currval = data.rates; // Store the conversion rates in 'currencies'
-            
-			
-			if (fromcurr=='usd'){
-				convrate=currval[tocurr];
-				outval=inval*convrate;
-			}
-			else if (tocurr=='usd'){
-				convrate=currval[tocurr];
-				outval=inval/convrate;
-			}
-			else {
-				convrate=currval[fromcurr];
-				inval/=convrate
-				convrate=currval[tocurr];
-				outval=inval*convrate
-			}
-        }
+            const response = await fetch(url); // Replace with your API URL
+          console.log('h')  
+					const data = await response.json();
+					          console.log('h')  
 
-        }    
+		        console.log(data)
+            currval = data[fromcurr]; // Store the conversion rates in 'currencies'
+            updateOutval();
+					
+			
+				
+					
+			
+			}
+          
 		
     
         catch (error) {
             console.error("Error fetching currency rates: ", error); // Handle any errors
         }
     }
-    fetchData();
-    
+	function updateOutval() {
+		convrate=currval[tocurr];
+				outval=inval*convrate;
+	}
+ $: fetchData(), [fromcurr, tocurr];  
+	$: updateOutval(), [inval];
 </script>
 
 <main>
 <div>
 	<p id=text>Enter the value and currency you want to convert from</p>
-	<input bind:value={inval}>
-	<input bind:value={fromcurr}/>
+	<input type="number" bind:value={inval}>
+	<input type="text" bind:value={fromcurr}/>
 </div>
 <div>
 	<p id=text>Enter the currency you vant to convert to</p>
 	<p style="display: inline-block;">{outval}</p>
-	<input bind:value={tocurr}>
+	<input type="text" bind:value={tocurr}>
 </div>
 </main>
 
